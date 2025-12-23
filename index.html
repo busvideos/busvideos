@@ -4,78 +4,67 @@
     <meta charset="UTF-8">
     <title>BusVideos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            margin: 0;
-            padding: 0;
             text-align: center;
-        }
-        .container {
-            max-width: 500px;
-            margin: auto;
-            padding: 20px;
-            background: white;
-            margin-top: 40px;
-            border-radius: 8px;
+            padding: 24px;
+            background-color: #ffffff;
         }
         h1 {
-            color: #1a1a1a;
+            font-size: 28px;
         }
         p {
-            color: #444;
             font-size: 16px;
         }
-        a.button {
+        .btn {
             display: block;
-            margin: 15px auto;
-            padding: 15px;
-            width: 90%;
-            background: #1976d2;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
+            margin: 16px auto;
+            padding: 14px;
+            width: 100%;
+            max-width: 320px;
             font-size: 18px;
+            color: white;
+            background-color: #1a73e8;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
         }
-        a.button.secondary {
-            background: #2e7d32;
+        .secondary {
+            background-color: #4caf50;
         }
         .note {
             font-size: 14px;
-            color: #666;
-            margin-top: 20px;
+            color: #555;
+            margin-top: 24px;
         }
     </style>
 </head>
-
 <body>
 
-<div class="container">
-    <h1>Bienvenido a BusVideos</h1>
+    <h1>🎬 BusVideos</h1>
 
-    <p>
-        Para ver películas durante el viaje, siga los pasos según su caso:
-    </p>
+    <p>Entretenimiento a bordo</p>
 
-    <!-- OPCIÓN 1 -->
-    <a class="button secondary" href="intent://open#Intent;scheme=busvideos;package=com.example.appvideosrouter;end">
-        Abrir AppVideosRouter<br>
-        <small>(si ya la tiene instalada)</small>
+    <!-- BOTÓN ABRIR APP -->
+    <a class="btn"
+       href="intent://busvideos#Intent;
+             scheme=busvideos;
+             package=com.example.appvideosrouter;
+             end">
+        ▶ Abrir BusVideos
     </a>
 
-    <!-- OPCIÓN 2 -->
-    <a class="button" href="AppVideosRouter_v1.1.apk" download>
-        Descargar AppVideosRouter<br>
-        <small>(solo una vez)</small>
+    <!-- BOTÓN INSTALAR APP -->
+    <a class="btn secondary"
+       href="BusVideos.apk">
+        ⬇ Instalar BusVideos
     </a>
 
     <p class="note">
-        📌 La aplicación funciona sin internet una vez instalada.<br>
-        VLC se instalará automáticamente si es necesario.
+        Android requerido<br>
+        iPhone: accede desde el navegador
     </p>
-</div>
 
 </body>
 </html>
