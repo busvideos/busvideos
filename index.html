@@ -76,15 +76,21 @@
     ▶ Activar BusVideos
 </a>
 
-    <script>
+   <script>
   const params = new URLSearchParams(window.location.search);
-  const qrCode = params.get('qr');
+  const bus = params.get("bus");
 
-  if (qrCode) {
-    const activarLink = `busvideos://open?modo=activar&qr=${qrCode}`;
-    document.getElementById('btnActivar').href = activarLink;
+  const btnActivar = document.getElementById("btnActivar");
+
+  if (bus) {
+    btnActivar.href = `busvideos://open?modo=activar&bus=${bus}`;
   } else {
-    document.getElementById('btnActivar').style.display = 'none';
+    // Si por alguna razón no hay bus, deshabilitamos el botón
+    btnActivar.style.opacity = "0.5";
+    btnActivar.onclick = function (e) {
+      e.preventDefault();
+      alert("No se pudo iniciar la activación. Bus no identificado.");
+    };
   }
 </script>
 
