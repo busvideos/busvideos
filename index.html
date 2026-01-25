@@ -1,112 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>BusVideos</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 24px;
-            background-color: #ffffff;
-        }
-        h1 {
-            font-size: 28px;
-        }
-        p {
-            font-size: 16px;
-        }
-        .btn {
-            display: block;
-            margin: 16px auto;
-            padding: 14px;
-            width: 100%;
-            max-width: 320px;
-            font-size: 18px;
-            color: white;
-            background-color: #1a73e8;
-            border: none;
-            border-radius: 6px;
-            text-decoration: none;
-        }
-        .secondary {
-            background-color: #4caf50;
-        }
-        .note {
-            font-size: 14px;
-            color: #555;
-            margin-top: 24px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>BusVideos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 24px;
+      background-color: #ffffff;
+    }
+    h1 { font-size: 28px; }
+    p { font-size: 16px; }
+    .btn {
+      display: block;
+      margin: 16px auto;
+      padding: 14px;
+      width: 100%;
+      max-width: 320px;
+      font-size: 18px;
+      color: white;
+      background-color: #1a73e8;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+    .secondary { background-color: #4caf50; }
+    .note {
+      font-size: 14px;
+      color: #555;
+      margin-top: 24px;
+    }
+  </style>
 </head>
+
 <body>
 
-    <h1>🎬 BusVideos</h1>
+  <h1>🎬 BusVideos</h1>
+  <p>Entretenimiento a bordo</p>
 
-    <p>Entretenimiento a bordo</p>
+  <!-- ABRIR APP -->
+  <a class="btn" id="btnAbrir">▶ Abrir BusVideos</a>
 
-    <!-- BOTÓN ABRIR APP -->
-    <a class="btn" id="btnAbrir">
-    ▶ Abrir BusVideos
-</a>
+  <!-- INSTALAR APP -->
+  <a class="btn secondary" href="BusVideos.apk">
+    ⬇ Instalar BusVideos
+  </a>
 
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const modo = params.get("modo");
-  const bus = params.get("bus");
+  <!-- ACTIVAR SERVICIO -->
+  <a class="btn" id="btnActivar">▶ Activar BusVideos</a>
 
-  let deepLink = "busvideos://open";
+  <p class="note">
+    Bienvenido<br>
+    Disfruta de nuestro servicio
+  </p>
 
-  if (modo && bus) {
-    deepLink = `busvideos://open?modo=${modo}&bus=${bus}`;
-  }
+  <!-- SCRIPT ÚNICO -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const modo = params.get("modo");
+    const bus = params.get("bus");
 
-  document.getElementById("btnAbrir").href = deepLink;
-</script>
+    const btnAbrir = document.getElementById("btnAbrir");
+    const btnActivar = document.getElementById("btnActivar");
 
-       <!-- BOTÓN INSTALAR APP -->
-    <a class="btn secondary"
-       href="BusVideos.apk">
-        ⬇ Instalar BusVideos
-    </a>
+    // Abrir app normal
+    btnAbrir.href = bus
+      ? `busvideos://open?bus=${bus}`
+      : `busvideos://open`;
 
-     <!-- BOTÓN ABRIR APP - MODO ACTIVACIÓN -->
-<a class="btn" id="btnActivar" href="#">
-    ▶ Activar BusVideos
-</a>
+    // Activar servicio
+    if (bus) {
+      btnActivar.href = `busvideos://open?modo=activar&bus=${bus}`;
+    } else {
+      btnActivar.style.opacity = "0.5";
+      btnActivar.onclick = (e) => {
+        e.preventDefault();
+        alert("No se pudo iniciar la activación. Bus no identificado.");
+      };
+    }
+  </script>
 
-   <script>
-  const params = new URLSearchParams(window.location.search);
-  const bus = params.get("bus");
-
-  const btnActivar = document.getElementById("btnActivar");
-
-  if (bus) {
-    btnActivar.href = `busvideos://open?modo=activar&bus=${bus}`;
-  } else {
-    // Si por alguna razón no hay bus, deshabilitamos el botón
-    btnActivar.style.opacity = "0.5";
-    btnActivar.onclick = function (e) {
-      e.preventDefault();
-      alert("No se pudo iniciar la activación. Bus no identificado.");
-    };
-  }
-</script>
-
-    <p class="note">
-        Bienvenido<br>
-        Disfruta de nuestro sevicio
-    </p>
-
-    <script>
-  const params = new URLSearchParams(window.location.search);
-  const qrCode = params.get('qr');
-
-  if (qrCode) {
-    alert("QR detectado: " + qrCode);
-  }
-</script>
-    
 </body>
 </html>
