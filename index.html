@@ -51,6 +51,17 @@
         ▶ Abrir BusVideos
     </a>
 
+       <!-- BOTÓN INSTALAR APP -->
+    <a class="btn secondary"
+       href="BusVideos.apk">
+        ⬇ Instalar BusVideos
+    </a>
+
+     <!-- BOTÓN ABRIR APP - MODO ACTIVACIÓN -->
+<a class="btn" id="btnActivar" href="#">
+    ▶ Activar BusVideos
+</a>
+
     <script>
   const params = new URLSearchParams(window.location.search);
   const qrCode = params.get('qr');
@@ -62,19 +73,6 @@
     document.getElementById('btnActivar').style.display = 'none';
   }
 </script>
-
-    <!-- BOTÓN INSTALAR APP -->
-    <a class="btn secondary"
-       href="BusVideos.apk">
-        ⬇ Instalar BusVideos
-    </a>
-
-     <!-- BOTÓN ABRIR APP - MODO ACTIVACIÓN -->
-<a class="btn" id="btnActivar" href="#">
-    ▶ Activar BusVideos
-</a>
-
-   
 
     <p class="note">
         Bienvenido<br>
