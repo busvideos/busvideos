@@ -47,9 +47,23 @@
     <p>Entretenimiento a bordo</p>
 
     <!-- BOTÓN ABRIR APP -->
-    <a class="btn" href="busvideos://open">
-        ▶ Abrir BusVideos
-    </a>
+    <a class="btn" id="btnAbrir">
+    ▶ Abrir BusVideos
+</a>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const modo = params.get("modo");
+  const bus = params.get("bus");
+
+  let deepLink = "busvideos://open";
+
+  if (modo && bus) {
+    deepLink = `busvideos://open?modo=${modo}&bus=${bus}`;
+  }
+
+  document.getElementById("btnAbrir").href = deepLink;
+</script>
 
        <!-- BOTÓN INSTALAR APP -->
     <a class="btn secondary"
