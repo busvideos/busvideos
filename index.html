@@ -52,17 +52,6 @@
     </a>
 
    
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const qrCode = params.get('qr');
-
-  if (qrCode) {
-    const activarLink = `busvideos://open?modo=activar&qr=${qrCode}`;
-    document.getElementById('btnActivar').href = activarLink;
-  } else {
-    document.getElementById('btnActivar').style.display = 'none';
-  }
-</script>
 
     <!-- BOTÓN INSTALAR APP -->
     <a class="btn secondary"
@@ -74,6 +63,18 @@
 <a class="btn" id="btnActivar" href="#">
     ▶ Activar BusVideos
 </a>
+
+    <script>
+  const params = new URLSearchParams(window.location.search);
+  const qrCode = params.get('qr');
+
+  if (qrCode) {
+    const activarLink = `busvideos://open?modo=activar&qr=${qrCode}`;
+    document.getElementById('btnActivar').href = activarLink;
+  } else {
+    document.getElementById('btnActivar').style.display = 'none';
+  }
+</script>
 
     <p class="note">
         Bienvenido<br>
