@@ -62,5 +62,14 @@
         iPhone: accede desde el navegador
     </p>
 
+    <script>
+  const params = new URLSearchParams(window.location.search);
+  const qrCode = params.get('qr');
+
+  if (qrCode) {
+    alert("QR detectado: " + qrCode);
+  }
+</script>
+    
 </body>
 </html>
