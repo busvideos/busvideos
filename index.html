@@ -44,42 +44,28 @@
 <h1>🎬 BusVideos</h1>
 <p>Entretenimiento a bordo</p>
 
-<!-- BOTÓN ABRIR APP (PASAJERO) -->
+<!-- BOTÓN ABRIR APP -->
 <a class="btn" id="btnAbrir">▶ Abrir BusVideos</a>
 
 <!-- BOTÓN INSTALAR -->
 <a class="btn secondary" href="BusVideos.apk">⬇ Instalar BusVideos</a>
 
-<!-- BOTÓN ACTIVAR SERVICIO -->
-<a class="btn" id="btnActivar">▶ Activar BusVideos</a>
-
 <p class="note">
-    Bienvenido<br>
-    Disfruta de nuestro servicio
+    Si ya tienes la app instalada, pulsa <b>Abrir BusVideos</b><br>
+    Caso contrario, instálala primero
 </p>
 
 <script>
     const params = new URLSearchParams(window.location.search);
     const bus = params.get("bus");
 
-    // 👉 ABRIR NORMAL (SIN MODO)
+    // 👉 Deep link único hacia la app
     let abrirLink = "busvideos://open";
     if (bus) {
         abrirLink += `?bus=${bus}`;
     }
-    document.getElementById("btnAbrir").href = abrirLink;
 
-    // 👉 ACTIVAR (SOLO CON modo=activar)
-    if (bus) {
-        document.getElementById("btnActivar").href =
-            `busvideos://open?modo=activar&bus=${bus}`;
-    } else {
-        document.getElementById("btnActivar").style.opacity = "0.5";
-        document.getElementById("btnActivar").onclick = function (e) {
-            e.preventDefault();
-            alert("Bus no identificado para activación.");
-        };
-    }
+    document.getElementById("btnAbrir").href = abrirLink;
 </script>
 
 </body>
