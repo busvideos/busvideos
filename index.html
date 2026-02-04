@@ -49,32 +49,20 @@
 
 <script>
   const params = new URLSearchParams(window.location.search);
-
-  // bus viene del QR: ?bus=BV-CCC-001
   const bus = params.get("bus");
 
-  // Control temporal (hasta que exista backend)
-  // cliente -> muestra Instalar + Activar
-  // pasajero -> muestra solo Instalar
-  const tipo = (params.get("tipo") || "cliente").toLowerCase();
-
-  // Link de activar abre la app en modo activar
-  let activarLink = "busvideos://open?modo=activar";
-  if (bus) activarLink += `&bus=${encodeURIComponent(bus)}`;
-
   const btnActivar = document.getElementById("btnActivar");
-  btnActivar.href = activarLink;
-
   const msg = document.getElementById("msg");
 
-  if (tipo === "pasajero") {
-    // Pasajero: NO ve activar
-    btnActivar.style.display = "none";
-    msg.innerHTML = "Instala la app para continuar.";
-  } else {
-    // Cliente: ve activar
-    msg.innerHTML = "Después de instalar, pulsa <b>Activar BusVideos</b> e ingresa tu PIN y Código App.";
-  }
+  // 🔒 Activar DESHABILITADO por defecto
+  btnActivar.style.opacity = "0.5";
+  btnActivar.style.pointerEvents = "none";
+
+  msg.innerHTML =
+    "Paso 1: <b>Instala la app BusVideos</b>.<br>" +
+    "Paso 2: Abre nuevamente esta página y pulsa <b>Activar BusVideos</b>.";
+
+  // Cuando exista APK real y botón Volver, aquí se habilitará Activar
 </script>
 
 </body>
