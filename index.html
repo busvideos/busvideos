@@ -32,6 +32,9 @@
         .secondary {
             background-color: #4caf50;
         }
+        .warning {
+            background-color: #f57c00;
+        }
         .note {
             font-size: 14px;
             color: #555;
@@ -50,22 +53,44 @@
 <!-- BOTÓN INSTALAR -->
 <a class="btn secondary" href="BusVideos.apk">⬇ Instalar BusVideos</a>
 
-<p class="note">
-    Si ya tienes la app instalada, pulsa <b>Abrir BusVideos</b><br>
-    Caso contrario, instálala primero
-</p>
+<!-- BOTÓN ACTIVAR (solo cliente / servicio no activo) -->
+<a class="btn warning" id="btnActivar">▶ Activar BusVideos</a>
+
+<p class="note" id="mensaje"></p>
 
 <script>
+    // 🔧 CONFIGURACIÓN TEMPORAL
+    // false = servicio NO activado (cliente verá Activar)
+    // true  = servicio activado (pasajero NO verá Activar)
+    const SERVICE_ACTIVE = true;
+
     const params = new URLSearchParams(window.location.search);
     const bus = params.get("bus");
 
-    // 👉 Deep link único hacia la app
+    // Deep link base
     let abrirLink = "busvideos://open";
+    let activarLink = "busvideos://open?modo=activar";
+
     if (bus) {
         abrirLink += `?bus=${bus}`;
+        activarLink += `&bus=${bus}`;
     }
 
     document.getElementById("btnAbrir").href = abrirLink;
+    document.getElementById("btnActivar").href = activarLink;
+
+    // 🔐 Reglas de visibilidad
+    if (SERVICE_ACTIVE) {
+        // Pasajero
+        document.getElementById("btnActivar").style.display = "none";
+        document.getElementById("mensaje").innerHTML =
+            "Si ya tienes la app instalada, pulsa <b>Abrir BusVideos</b>.<br>" +
+            "Caso contrario, instálala primero.";
+    } else {
+        // Cliente / servicio suspendido
+        document.getElementById("mensaje").innerHTML =
+            "Después de instalar la app, pulsa <b>Activar BusVideos</b> para habilitar el servicio.";
+    }
 </script>
 
 </body>
