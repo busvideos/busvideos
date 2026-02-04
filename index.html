@@ -1,96 +1,80 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>BusVideos</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 24px;
-            background-color: #ffffff;
-        }
-        h1 {
-            font-size: 28px;
-        }
-        p {
-            font-size: 16px;
-        }
-        .btn {
-            display: block;
-            margin: 16px auto;
-            padding: 14px;
-            width: 100%;
-            max-width: 320px;
-            font-size: 18px;
-            color: white;
-            background-color: #1a73e8;
-            border-radius: 6px;
-            text-decoration: none;
-        }
-        .secondary {
-            background-color: #4caf50;
-        }
-        .warning {
-            background-color: #f57c00;
-        }
-        .note {
-            font-size: 14px;
-            color: #555;
-            margin-top: 24px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>BusVideos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 24px;
+      background-color: #ffffff;
+    }
+    h1 { font-size: 28px; margin-bottom: 6px; }
+    p { font-size: 16px; margin-top: 0; }
+    .btn {
+      display: block;
+      margin: 16px auto;
+      padding: 14px;
+      width: 100%;
+      max-width: 320px;
+      font-size: 18px;
+      color: white;
+      background-color: #4caf50;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+    .primary { background-color: #1a73e8; }
+    .note {
+      font-size: 14px;
+      color: #555;
+      margin-top: 24px;
+      line-height: 1.4;
+    }
+  </style>
 </head>
 <body>
 
 <h1>🎬 BusVideos</h1>
 <p>Entretenimiento a bordo</p>
 
-<!-- BOTÓN ABRIR APP -->
-<a class="btn" id="btnAbrir">▶ Abrir BusVideos</a>
-
 <!-- BOTÓN INSTALAR -->
-<a class="btn secondary" href="BusVideos.apk">⬇ Instalar BusVideos</a>
+<a class="btn" id="btnInstalar" href="BusVideos.apk">⬇ Instalar BusVideos</a>
 
-<!-- BOTÓN ACTIVAR (solo cliente / servicio no activo) -->
-<a class="btn warning" id="btnActivar">▶ Activar BusVideos</a>
+<!-- BOTÓN ACTIVAR (solo cliente) -->
+<a class="btn primary" id="btnActivar">▶ Activar BusVideos</a>
 
-<p class="note" id="mensaje"></p>
+<p class="note" id="msg"></p>
 
 <script>
-    // 🔧 CONFIGURACIÓN TEMPORAL
-    // false = servicio NO activado (cliente verá Activar)
-    // true  = servicio activado (pasajero NO verá Activar)
-    const SERVICE_ACTIVE = true;
+  const params = new URLSearchParams(window.location.search);
 
-    const params = new URLSearchParams(window.location.search);
-    const bus = params.get("bus");
+  // bus viene del QR: ?bus=BV-CCC-001
+  const bus = params.get("bus");
 
-    // Deep link base
-    let abrirLink = "busvideos://open";
-    let activarLink = "busvideos://open?modo=activar";
+  // Control temporal (hasta que exista backend)
+  // cliente -> muestra Instalar + Activar
+  // pasajero -> muestra solo Instalar
+  const tipo = (params.get("tipo") || "cliente").toLowerCase();
 
-    if (bus) {
-        abrirLink += `?bus=${bus}`;
-        activarLink += `&bus=${bus}`;
-    }
+  // Link de activar abre la app en modo activar
+  let activarLink = "busvideos://open?modo=activar";
+  if (bus) activarLink += `&bus=${encodeURIComponent(bus)}`;
 
-    document.getElementById("btnAbrir").href = abrirLink;
-    document.getElementById("btnActivar").href = activarLink;
+  const btnActivar = document.getElementById("btnActivar");
+  btnActivar.href = activarLink;
 
-    // 🔐 Reglas de visibilidad
-    if (SERVICE_ACTIVE) {
-        // Pasajero
-        document.getElementById("btnActivar").style.display = "none";
-        document.getElementById("mensaje").innerHTML =
-            "Si ya tienes la app instalada, pulsa <b>Abrir BusVideos</b>.<br>" +
-            "Caso contrario, instálala primero.";
-    } else {
-        // Cliente / servicio suspendido
-        document.getElementById("mensaje").innerHTML =
-            "Después de instalar la app, pulsa <b>Activar BusVideos</b> para habilitar el servicio.";
-    }
+  const msg = document.getElementById("msg");
+
+  if (tipo === "pasajero") {
+    // Pasajero: NO ve activar
+    btnActivar.style.display = "none";
+    msg.innerHTML = "Instala la app para continuar.";
+  } else {
+    // Cliente: ve activar
+    msg.innerHTML = "Después de instalar, pulsa <b>Activar BusVideos</b> e ingresa tu PIN y Código App.";
+  }
 </script>
 
 </body>
