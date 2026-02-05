@@ -39,19 +39,17 @@
 <h1>🎬 BusVideos</h1>
 <p>Entretenimiento a bordo</p>
 
-<!-- BOTÓN INSTALAR -->
-<a class="btn" id="btnInstalar" href="BusVideos.apk">
-⬇ Instalar BusVideos
-</a>
+<a class="btn" id="btnInstalar" href="BusVideos.apk">⬇ Instalar BusVideos</a>
 
-<!-- BOTÓN ACTIVAR -->
-<a class="btn primary disabled" id="btnActivar">
-▶ Activar BusVideos
-</a>
+<a class="btn primary" id="btnActivar">▶ Activar BusVideos</a>
 
 <p class="note" id="msg"></p>
 
 <script>
+  // ================================
+  // BUSVIDEOS – CONTROL CENTRAL
+  // ================================
+
   const params = new URLSearchParams(window.location.search);
   const bus = params.get("bus");
   const fromApp = params.get("from");
@@ -59,33 +57,39 @@
   const btnActivar = document.getElementById("btnActivar");
   const msg = document.getElementById("msg");
 
-  // 🔒 Estado inicial
-  btnActivar.classList.add("disabled");
-  btnActivar.style.pointerEvents = "none";
+  // 🔧 Funciones utilitarias
+  function disableActivar() {
+    btnActivar.style.opacity = "0.5";
+    btnActivar.style.pointerEvents = "none";
+  }
 
-  msg.innerHTML =
-    "Paso 1: <b>Instala la app BusVideos</b>.<br>" +
-    "Paso 2: Abre nuevamente esta página y pulsa <b>Activar BusVideos</b>.";
-
-  // 👉 Si vuelve desde la app, habilitamos Activar
-  if (fromApp === "app") {
-    btnActivar.classList.remove("disabled");
+  function enableActivar() {
+    btnActivar.style.opacity = "1";
     btnActivar.style.pointerEvents = "auto";
+  }
 
-    let activarLink = "busvideos://open?modo=activar";
-    if (bus) activarLink += `&bus=${bus}`;
-    btnActivar.href = activarLink;
+  // 🔗 Construir link de activación
+  let activarLink = "busvideos://open?modo=activar";
+  if (bus) activarLink += `&bus=${bus}`;
+  btnActivar.href = activarLink;
 
+  // ================================
+  // LÓGICA PRINCIPAL
+  // ================================
+
+  if (fromApp === "app") {
+    // 🟢 Viene desde la app → activar permitido
+    enableActivar();
     msg.innerHTML =
       "Pulsa <b>Activar BusVideos</b> para continuar con la activación.";
+  } else {
+    // 🔴 Primera vez → debe instalar
+    disableActivar();
+    msg.innerHTML =
+      "Paso 1: <b>Instala la app BusVideos</b>.<br>" +
+      "Paso 2: Abre nuevamente esta página y pulsa <b>Activar BusVideos</b>.";
   }
 </script>
-
-<style>
-  .disabled {
-    opacity: 0.5;
-  }
-</style>
 
 </body>
 </html>
