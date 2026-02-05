@@ -80,5 +80,18 @@
   document.getElementById("btnActivar").href = activarLink;
 </script>
 
+  <script>
+  const params = new URLSearchParams(window.location.search);
+  const fromApp = params.get("from");
+
+  if (fromApp === "app") {
+    document.getElementById("btnActivar").disabled = false;
+    document.getElementById("btnActivar").classList.remove("disabled");
+  } else {
+    document.getElementById("btnActivar").disabled = true;
+    document.getElementById("btnActivar").classList.add("disabled");
+  }
+</script>
+
 </body>
 </html>
