@@ -57,7 +57,6 @@
   const btnActivar = document.getElementById("btnActivar");
   const msg = document.getElementById("msg");
 
-  // 🔧 Funciones utilitarias
   function disableActivar() {
     btnActivar.style.opacity = "0.5";
     btnActivar.style.pointerEvents = "none";
@@ -68,22 +67,30 @@
     btnActivar.style.pointerEvents = "auto";
   }
 
-  // 🔗 Construir link de activación
-  let activarLink = "busvideos://open?modo=activar";
-  if (bus) activarLink += `&bus=${bus}`;
-  btnActivar.href = activarLink;
+  // Link de activación (SIEMPRE con bus)
+  if (bus) {
+    btnActivar.href = `busvideos://open?modo=activar&bus=${bus}`;
+  }
 
   // ================================
-  // LÓGICA PRINCIPAL
+  // REGLAS DE FLUJO
   // ================================
 
-  if (fromApp === "app") {
-    // 🟢 Viene desde la app → activar permitido
+  if (!bus) {
+    // ❌ Caso inválido
+    disableActivar();
+    msg.innerHTML = "Código de bus no detectado.";
+  }
+
+  else if (bus && fromApp === "app") {
+    // 🟢 REGRESO DESDE LA APP (CASO CLAVE)
     enableActivar();
     msg.innerHTML =
       "Pulsa <b>Activar BusVideos</b> para continuar con la activación.";
-  } else {
-    // 🔴 Primera vez → debe instalar
+  }
+
+  else {
+    // 🔵 PRIMER INGRESO DESDE QR
     disableActivar();
     msg.innerHTML =
       "Paso 1: <b>Instala la app BusVideos</b>.<br>" +
