@@ -47,22 +47,42 @@
 
 <p class="note" id="msg"></p>
 
-<script>
+<button
+  id="btnActivar"
+  onclick="window.location.href='busvideos://activate';"
+>
+▶ Activar BusVideos
+</button>
+
+<p id="msg"></p>
+
+  <style>
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+</style>
+
+  <script>
   const params = new URLSearchParams(window.location.search);
-  const bus = params.get("bus");
+  const fromApp = params.get("from");
 
   const btnActivar = document.getElementById("btnActivar");
   const msg = document.getElementById("msg");
 
-  // 🔒 Activar DESHABILITADO por defecto
-  btnActivar.style.opacity = "0.5";
-  btnActivar.style.pointerEvents = "none";
+  // 🔒 Deshabilitado por defecto
+  btnActivar.classList.add("disabled");
 
   msg.innerHTML =
     "Paso 1: <b>Instala la app BusVideos</b>.<br>" +
     "Paso 2: Abre nuevamente esta página y pulsa <b>Activar BusVideos</b>.";
 
-  // Cuando exista APK real y botón Volver, aquí se habilitará Activar
+  // ✅ Si viene desde la app, habilitar Activar
+  if (fromApp === "app") {
+    btnActivar.classList.remove("disabled");
+    msg.innerHTML =
+      "Pulsa <b>Activar BusVideos</b> para continuar con la activación del servicio.";
+  }
 </script>
 
   <script>
