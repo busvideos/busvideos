@@ -65,5 +65,20 @@
   // Cuando exista APK real y botón Volver, aquí se habilitará Activar
 </script>
 
+  <script>
+  const params = new URLSearchParams(window.location.search);
+  const bus = params.get("bus");
+
+  // Abrir app (normal)
+  let abrirLink = "busvideos://open";
+  if (bus) abrirLink += `?bus=${bus}`;
+  document.getElementById("btnAbrir").href = abrirLink;
+
+  // Activar servicio (modo especial)
+  let activarLink = "busvideos://open?modo=activar";
+  if (bus) activarLink += `&bus=${bus}`;
+  document.getElementById("btnActivar").href = activarLink;
+</script>
+
 </body>
 </html>
