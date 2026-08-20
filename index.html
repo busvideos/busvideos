@@ -1,102 +1,256 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
+
   <title>BusVideos</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
   <style>
+
     body {
       font-family: Arial, sans-serif;
       text-align: center;
       padding: 24px;
       background-color: #ffffff;
+      margin: 0;
     }
-    h1 { font-size: 28px; margin-bottom: 6px; }
-    p { font-size: 16px; margin-top: 0; }
+
+    .contenedor {
+      max-width: 380px;
+      margin: 0 auto;
+      padding-top: 35px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+      color: #1565C0;
+    }
+
+    .subtitulo {
+      font-size: 16px;
+      margin-top: 0;
+      margin-bottom: 30px;
+      color: #333333;
+    }
+
     .btn {
       display: block;
-      margin: 16px auto;
-      padding: 14px;
+      box-sizing: border-box;
       width: 100%;
-      max-width: 320px;
-      font-size: 18px;
+      margin: 14px auto;
+      padding: 14px;
+
+      border: none;
+      border-radius: 8px;
+
+      font-size: 17px;
+      font-weight: bold;
+
       color: white;
-      background-color: #4caf50;
-      border-radius: 6px;
       text-decoration: none;
+
+      cursor: pointer;
     }
-    .primary { background-color: #1a73e8; }
-    .note {
-      font-size: 14px;
-      color: #555;
-      margin-top: 24px;
-      line-height: 1.4;
+
+    /* Instalar ServiZona */
+    .instalar {
+      background-color: #43A047;
     }
+
+    /* Ingresar a BusVideos */
+    .ingresar {
+      background-color: #1565C0;
+    }
+
+    /* Activar / Reactivar / Reinstalar */
+    .activar {
+      background-color: #FB8C00;
+    }
+
+    .estado {
+      margin-top: 25px;
+      font-size: 15px;
+      font-weight: bold;
+      color: #263238;
+    }
+
+    .nota {
+      margin-top: 28px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #607D8B;
+    }
+
+    .oculto {
+      display: none;
+    }
+
   </style>
+
 </head>
+
 <body>
 
-<h1>🎬 BusVideos</h1>
-<p>Entretenimiento a bordo</p>
+  <div class="contenedor">
 
-<a class="btn" id="btnInstalar" href="BusVideos.apk">⬇ Instalar BusVideos</a>
+    <h1>🎬 BusVideos</h1>
 
-<a class="btn primary" id="btnActivar">▶ Activar BusVideos</a>
+    <p class="subtitulo">
+      Entretenimiento a bordo
+    </p>
 
-<p class="note" id="msg"></p>
 
-<script>
-  // ================================
-  // BUSVIDEOS – CONTROL CENTRAL
-  // ================================
+    <!-- ====================================== -->
+    <!-- INSTALAR SERVIZONA                     -->
+    <!-- Se conectará al APK cuando esté listo  -->
+    <!-- ====================================== -->
 
-  const params = new URLSearchParams(window.location.search);
-  const bus = params.get("bus");
-  const fromApp = params.get("from");
+    <a
+      class="btn instalar"
+      id="btnInstalar"
+      href="#"
+    >
+      ⬇ Instalar ServiZona
+    </a>
 
-  const btnActivar = document.getElementById("btnActivar");
-  const msg = document.getElementById("msg");
 
-  function disableActivar() {
-    btnActivar.style.opacity = "0.5";
-    btnActivar.style.pointerEvents = "none";
-  }
+    <!-- ====================================== -->
+    <!-- INGRESAR A BUSVIDEOS                   -->
+    <!-- Solo se mostrará si está ACTIVO        -->
+    <!-- ====================================== -->
 
-  function enableActivar() {
-    btnActivar.style.opacity = "1";
-    btnActivar.style.pointerEvents = "auto";
-  }
+    <a
+      class="btn ingresar oculto"
+      id="btnIngresar"
+      href="#"
+    >
+      ▶ Ingresar a BusVideos
+    </a>
 
-  // Link de activación (SIEMPRE con bus)
-  if (bus) {
-    btnActivar.href = `busvideos://open?modo=activar&bus=${bus}`;
-  }
 
-  // ================================
-  // REGLAS DE FLUJO
-  // ================================
+    <!-- ====================================== -->
+    <!-- ACTIVAR / REACTIVAR / REINSTALAR       -->
+    <!-- ====================================== -->
 
-  if (!bus) {
-    // ❌ Caso inválido
-    disableActivar();
-    msg.innerHTML = "Código de bus no detectado.";
-  }
+    <a
+      class="btn activar oculto"
+      id="btnActivar"
+      href="#"
+    >
+      Activar servicio
+    </a>
 
-  else if (bus && fromApp === "app") {
-    // 🟢 REGRESO DESDE LA APP (CASO CLAVE)
-    enableActivar();
-    msg.innerHTML =
-      "Pulsa <b>Activar BusVideos</b> para continuar con la activación.";
-  }
 
-  else {
-    // 🔵 PRIMER INGRESO DESDE QR
-    disableActivar();
-    msg.innerHTML =
-      "Paso 1: <b>Instala la app BusVideos</b>.<br>" +
-      "Paso 2: Abre nuevamente esta página y pulsa <b>Activar BusVideos</b>.";
-  }
-</script>
+    <p
+      class="estado"
+      id="estadoServicio"
+    >
+    </p>
+
+
+    <p
+      class="nota"
+      id="mensaje"
+    >
+    </p>
+
+  </div>
+
+
+  <script>
+
+    // =====================================================
+    // BUSVIDEOS + SERVIZONA
+    // PÁGINA PERMANENTE DEL QR DEL BUS
+    // =====================================================
+
+    const params =
+      new URLSearchParams(window.location.search);
+
+    const codigoBus =
+      params.get("bus");
+
+
+    const btnInstalar =
+      document.getElementById("btnInstalar");
+
+    const btnIngresar =
+      document.getElementById("btnIngresar");
+
+    const btnActivar =
+      document.getElementById("btnActivar");
+
+    const estadoServicio =
+      document.getElementById("estadoServicio");
+
+    const mensaje =
+      document.getElementById("mensaje");
+
+
+    // =====================================================
+    // BOTÓN INSTALAR SERVIZONA
+    // =====================================================
+    //
+    // TODAVÍA NO DESCARGAMOS NADA.
+    // Cuando ServiZona esté terminada conectaremos aquí
+    // la APK definitiva.
+    // =====================================================
+
+    btnInstalar.addEventListener(
+      "click",
+      function(event) {
+
+        event.preventDefault();
+
+        alert(
+          "La instalación de ServiZona se habilitará próximamente."
+        );
+      }
+    );
+
+
+    // =====================================================
+    // VALIDAR QUE EL QR CONTENGA CÓDIGO DE BUS
+    // =====================================================
+
+    if (!codigoBus) {
+
+      estadoServicio.innerHTML =
+        "Código de bus no detectado.";
+
+      mensaje.innerHTML =
+        "Escanee nuevamente el código QR ubicado en el bus.";
+
+    } else {
+
+      // ===================================================
+      // POR AHORA SOLO CONFIRMAMOS EL BUS
+      //
+      // En el siguiente paso consultaremos el backend
+      // para conocer:
+      //
+      // ACTIVO
+      // SUSPENDIDO
+      // INACTIVO
+      // NO ACTIVADO
+      // ===================================================
+
+      mensaje.innerHTML =
+        "Código de bus detectado: <b>" +
+        codigoBus +
+        "</b>";
+
+    }
+
+  </script>
 
 </body>
+
 </html>
